@@ -1030,25 +1030,32 @@ if connect() == true then
 	while true do
 		local control = fibaro:getGlobalValue("DSAudio_Control")
 		if control == "play" then
+			fibaro:debug('Received Play request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			play()
 		else if control == "stop" then
+			fibaro:debug('Received Stop request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			stop()
 		else if control == "pause" then
+			fibaro:debug('Received Pause request')
 			fibaro:setGlobal("DSAudio_Control", "pause")
 			pause()
 		else if control == "previous" then
+			fibaro:debug('Received Previous request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			previous_song()
 		else if control == "next" then
+			fibaro:debug('Received Next request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			next_song()
 		else if string.match(control, "volume_%d+") then
+			fibaro:debug('Received Volume request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			current_volume = tonumber(string.match(control, "volume_(%d+)"))
 			set_volume(current_volume)
 		else if control == "random" then
+			fibaro:debug('Received Random request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			stream_random_songs{quantity=75}
 		end
