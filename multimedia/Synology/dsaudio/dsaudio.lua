@@ -988,10 +988,10 @@ function stream_random_songs(args)
 		return
 	end
 
---	if (play(0) == false) then
---		fibaro:debug("Cannot play music !")
---		return
---	end
+	if (play(0) == false) then
+		fibaro:debug("Cannot play music !")
+		return
+	end
 
 end
 
