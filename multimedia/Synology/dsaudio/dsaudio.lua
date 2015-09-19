@@ -599,7 +599,7 @@ function do_http_request( args )
 			httpClient:dispose();
 
 			if debug == true then
-				fibaro:debug("Handling response")
+				fibaro:debug("Handling response (" .. loop .. "/" .. retry_count .. ")")
 				local info  = ""
 				if response ~= nil then
 					info = "response=" .. response .. " "
@@ -619,6 +619,7 @@ function do_http_request( args )
 			-- unless let's make the retry loop
 			if response == nil and retry_count > 1 then
 				fibaro:debug("Failed, let's retry " .. loop .."/" .. retry_count)
+				fibaro:sleep(250)
 			else
 				break
 			end
