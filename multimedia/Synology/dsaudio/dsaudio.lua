@@ -773,11 +773,13 @@ end
 
 function extract_current_title(status)
 	if status then
-		title = status.data.song["title"]
-		if status.data.song.additional.song_tag["artist"] then
-			title = title .. " - " .. status.data.song.additional.song_tag["artist"]
+		if status.data.song["title"] =~ nil then
+			title = status.data.song["title"]
+			if status.data.song.additional.song_tag["artist"] then
+				title = title .. " - " .. status.data.song.additional.song_tag["artist"]
+			end
+			return title
 		end
-		return title
 	end
 	return ""
 end
