@@ -773,7 +773,7 @@ end
 
 function extract_current_title(status)
 	if status then
-		if status.data.song["title"] then
+		if type(status.data.song) ~= "userdata" then
 			title = status.data.song["title"]
 			if status.data.song.additional.song_tag["artist"] then
 				title = title .. " - " .. status.data.song.additional.song_tag["artist"]
