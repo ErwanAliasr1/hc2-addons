@@ -1020,7 +1020,7 @@ end
 
 
 fibaro:debug("<< DSAudio plugin version " .. version .. "-" .. release .. " by Erwan Velu >>")
-fibaro:debug("<< Download the latest version at https://github.com/ErwanAliasr1/hc2-dsaudio >>")
+fibaro:debug("<< Download the latest version at https://github.com/ErwanAliasr1/hc2-addons >>")
 fibaro:debug("<< Enjoy ! >>")
 fibaro:setGlobal("DSAudio_Control", "nop")
 if (fibaro:getGlobalValue("DSAudio_Control") ~= "nop") then
