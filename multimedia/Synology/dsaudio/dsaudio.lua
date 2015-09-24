@@ -19,7 +19,7 @@ local commandTimeOut = 3500
 local debug = false
 local version = "1.0"
 local release = "beta4"
-
+local session_url = "&session=AudioStation"
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 -- Toolkit Framework, lua library extention for HC2, hope that it will be useful.
@@ -668,7 +668,7 @@ end
 
 function login()
 	local endpoint="/webapi/auth.cgi"
-	local req_body= "api=SYNO.API.Auth&version=2&method=login&account=" .. user .. "&passwd=" .. password .. "&session=AudiStation&format=cookie"
+	local req_body= "api=SYNO.API.Auth&version=2&method=login&account=" .. user .. "&passwd=" .. password .. session_url.."&format=cookie"
 	local response = do_http_request{endpoint=endpoint, method="GET", size=#req_body, source=req_body}
 	if (tonumber(response['status']) ~= 200) then
 		fibaro:debug("Cannot login to " .. base_url .. "with user=" .. user .. " and password=" .. password)
@@ -689,7 +689,7 @@ end
 
 function logout()
 	local endpoint="/webapi/auth.cgi"
-	local req_body= "api=SYNO.API.Auth&version=1&method=logout&session=AudioStation"
+	local req_body= "api=SYNO.API.Auth&version=1&method=logout".. session_url
 	local response = do_http_request{endpoint=endpoint, method="GET", source=req_body}
 	if (tonumber(response['status']) ~= 200) then
 		fibaro:debug("logout: Cannot communicate with " .. base_url )
