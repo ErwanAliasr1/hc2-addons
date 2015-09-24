@@ -598,29 +598,19 @@ function do_http_request( args )
 			httpClient:disconnect();
 			httpClient:dispose();
 
-			if debug == true then
-				fibaro:debug("Handling response (" .. loop .. "/" .. retry_count .. ")")
-				local info  = ""
-				if response ~= nil then
-					info = "response=" .. response .. " "
-				end
-				
-				if status ~=nil then
-					info = info .. "status=" .. status .. " "
-				end
-
-				if errorCode ~=nil then
-					info = info .. "errorCode=" .. errorCode
-				end
-				fibaro:debug(info)
-			end
-
 			-- If we do have a valid response, let's continue
 			-- unless let's make the retry loop
-			if response == nil and retry_count > 1 then
+			if (string.len(response) > 53000) then
+				fibaro:debug("WARNING : response lenght is too long, retrying")
+				response = ''
+			end
+			if (response == nil or response == '') and retry_count > 1 then
 				fibaro:debug("Failed, let's retry " .. loop .."/" .. retry_count)
 				fibaro:sleep(250)
 			else
+				if (debug == true) then
+					fibaro:debug("Returning songs, string length = " .. string.len(response))
+				end
 				break
 			end
 		end
