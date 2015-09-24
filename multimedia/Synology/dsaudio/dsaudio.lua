@@ -1006,7 +1006,7 @@ function connect()
 		return false
 	end
 
-	fibaro:debug("### Connected to DSAudio ! ###");
+	fibaro:debug("### Connected to DSAudio with user " .. user .. " ! ###");
 
 	player_id = find_player_id(player_name)
 	if player_id == nil then
