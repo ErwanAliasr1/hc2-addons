@@ -598,12 +598,6 @@ function do_http_request( args )
 			httpClient:disconnect();
 			httpClient:dispose();
 
-			-- If we do have a valid response, let's continue
-			-- unless let's make the retry loop
-			if (string.len(response) > 53000) then
-				fibaro:debug("WARNING : response lenght is too long, retrying")
-				response = ''
-			end
 			if (response == nil or response == '') and retry_count > 1 then
 				fibaro:debug("Failed, let's retry " .. loop .."/" .. retry_count)
 				fibaro:sleep(250)
@@ -704,10 +698,6 @@ function get_random_songs(args)
 	local response = do_http_request{endpoint=endpoint, method="GET", source=req_body, retry=true}
 	if (tonumber(response['status']) ~= 200) then
 		fibaro:debug("add_random_songs: Cannot communicate with " .. base_url )
-		return songs
-	end
-
-	if (check_success(response) == false) then
 		return songs
 	end
 
