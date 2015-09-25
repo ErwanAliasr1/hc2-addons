@@ -18,7 +18,7 @@ local sid = nil
 local commandTimeOut = 3500
 local debug = false
 local version = "1.0"
-local release = "beta5"
+local release = "rc1"
 local session_url = "&session=AudioStation"
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
