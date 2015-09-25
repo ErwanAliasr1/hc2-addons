@@ -683,6 +683,31 @@ function logout()
 	return check_success(response)
 end
 
+function load_playlist(args)
+	--raw dump : api=SYNO.AudioStation.RemotePlayer&method=updateplaylist&library=shared&id=00A0DE8F41F8&offset=0&limit=291&play=true&version=2&containers_json=%5B%7B%22type%22%3A%22playlist%22%2C%22id%22%3A%22playlist_shared_smart%2F1%22%7D%5D
+	playlist = nil
+	if args then
+		if args.playlist then
+			playlist=args.playlist
+		end
+	end
+	if playlist == nil then
+		fibaro:debug("load_playlist: No playlist provided")
+		return false
+	else
+		fibaro:debug("load_playlist: Loading " .. playlist)
+	end
+
+	local endpoint="/webapi/AudioStation/remote_player.cgi"
+	local req_body="api=SYNO.AudioStation.RemotePlayer&method=updateplaylist&library=shared&id=" .. player_id .. "&offset=0&limit=8192&play=true&version=2&containers_json=%5B%7B%22type%22%3A%22playlist%22%2C%22id%22%3A%22playlist_shared_smart%2F"..playlist .."%22%7D%5D"
+	local response = do_http_request{endpoint=endpoint, method="GET", source=req_body, retry=true}
+	if (tonumber(response['status']) ~= 200) then
+		fibaro:debug("load_playlist: Cannot communicate with " .. base_url )
+		return false
+	end
+
+	return check_success(response)
+end
 
 function get_random_songs(args)
 	quantity=100
@@ -975,9 +1000,24 @@ function stream_random_songs(args)
 		fibaro:debug("Cannot play music !")
 		return
 	end
-
 end
 
+function stream_playlist(args)
+	if load_playlist(args) == false then
+		fibaro:debug("Cannot load playlist !")
+		return
+	end
+
+	if (stop() == false) then
+		fibaro:debug("Cannot stop music !")
+		return
+	end
+
+	if (play(0) == false) then
+		fibaro:debug("Cannot play music !")
+		return
+	end
+end
 
 function connect()
 	sid=login()
@@ -1041,6 +1081,12 @@ if connect() == true then
 			fibaro:debug('Received Random request')
 			fibaro:setGlobal("DSAudio_Control", "nop")
 			stream_random_songs{quantity=75}
+		else if string.match(control,"playlist_") then
+			playlist = string.match(control,'playlist_(.*)')
+			fibaro:debug('Received playlist request (' .. playlist .. ')')
+			fibaro:setGlobal("DSAudio_Control", "nop")
+			stream_playlist{playlist=playlist}
+		end
 		end
 		end
 		end
