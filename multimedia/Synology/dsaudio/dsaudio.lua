@@ -1020,6 +1020,9 @@ function stream_playlist(args)
 end
 
 function connect()
+        -- Before reconnecting, let's be sure the previous sessions are killed
+        logout()
+
 	sid=login()
 	if (sid == nil) then
 		fibaro:debug("Cannot find a valid SID in the response");
